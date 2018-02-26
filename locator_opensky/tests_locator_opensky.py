@@ -1,5 +1,5 @@
 import unittest
-import locator_opensky
+from  locator_opensky import __inside as locator_opensky
 import requests
 
 

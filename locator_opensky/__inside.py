@@ -1,44 +1,8 @@
-"""
-locator_opensky - Returning the result by the API OpenSky,
-                  but with filtering the reach of the radius.
-"""
 
 from math import radians, cos, sin, asin, sqrt
-import requests
-
-__author__ = 'Ulyantsev Aleksandr (it.bumerang@gmail.com)'
-__license__ = 'MIT'
-__version__ = '1.0'
-
-__all__ = ["get_nearest_ships"]
 
 # default data resource URL
 __DEF_URL__ = "https://opensky-network.org/api/states/all"
-
-
-def get_nearest_ships(nearest=450, start_point=None):
-    """
-    Getting the nearest objects
-    @param (int) nearest: objects to filtering
-    @param (list) start_point: coefficient
-    @return (list): result
-    """
-    if start_point is None:
-        # 48.8566, 2.3516 - default coordinates of Paris
-        start_point = [48.8566, 2.3516]
-    elif not (isinstance(start_point, list) and
-              len(start_point) != 2 and
-              isinstance(start_point[0], float) and
-              isinstance(start_point[1], float)):
-        raise Exception("Wrong coordinates are given")
-    if not isinstance(nearest, int):
-        raise Exception("Exception due to not true "
-                        " the nearest radius")
-
-    r = requests.get(__DEF_URL__)
-    nearest_ships = __filter_of_nearests__(r.json()['states'],
-                                           nearest, start_point, )
-    return nearest_ships
 
 
 def __filter_of_nearests__(list, nearest, start_point):
@@ -101,10 +65,3 @@ def __calculate_distance__(lat1, lon1, lat2, lon2):
         km = EQU_RADIUS * c
         return round(km, 4)
 
-
-if __name__ == "__main__":
-    locator_list = get_nearest_ships()
-    for item in locator_list:
-        print("Callsign: {callsign}. "
-              "Coord: lon {longitude}, lan {latitude}".format(**item))
-    print("Len nearest objects: {}".format(len(locator_list)))
