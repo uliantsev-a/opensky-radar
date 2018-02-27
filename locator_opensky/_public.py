@@ -1,4 +1,4 @@
-import locator_opensky.__inside as this
+from locator_opensky import _core
 import requests
 
 def get_nearest_ships(nearest=450, start_point=None):
@@ -20,13 +20,14 @@ def get_nearest_ships(nearest=450, start_point=None):
         raise Exception("Exception due to not true "
                         " the nearest radius")
 
-    r = requests.get(this.__DEF_URL__)
-    nearest_ships = this.__filter_of_nearests__(r.json()['states'],
+    r = requests.get(_core.__DEF_URL__)
+    nearest_ships = _core.__filter_of_nearests__(r.json()['states'],
                                            nearest, start_point, )
     return nearest_ships
 
 
-if __name__ == "__main__":
+
+def __main__():
     locator_list = get_nearest_ships()
     for item in locator_list:
         print("Callsign: {callsign}. "

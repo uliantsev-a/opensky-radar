@@ -4,7 +4,6 @@ from math import radians, cos, sin, asin, sqrt
 # default data resource URL
 __DEF_URL__ = "https://opensky-network.org/api/states/all"
 
-
 def __filter_of_nearests__(list, nearest, start_point):
     """
     Filtering by the coefficient closest to the starting point
@@ -64,4 +63,3 @@ def __calculate_distance__(lat1, lon1, lat2, lon2):
         c = 2 * asin(sqrt(a))
         km = EQU_RADIUS * c
         return round(km, 4)
-

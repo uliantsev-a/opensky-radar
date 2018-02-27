@@ -9,4 +9,9 @@ setup(
     install_requires=[ 'requests', ],
     url='https://github.com/Bumerang47/locatorOpenSky',
     long_description=open(join(dirname(__file__), 'README.txt')).read(),
+    entry_points={
+        'console_scripts': [
+            'locator_opensky = locator_opensky._public:__main__'
+        ]
+    }
 )
