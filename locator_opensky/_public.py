@@ -1,9 +1,9 @@
 from locator_opensky import _core
 import requests
 
+
 def get_nearest_ships(nearest=450, start_point=None):
-    """
-    Getting the nearest objects
+    """ Getting the nearest objects
     @param (int) nearest: objects to filtering
     @param (list) start_point: coefficient
     @return (list): result
@@ -21,10 +21,8 @@ def get_nearest_ships(nearest=450, start_point=None):
                         " the nearest radius")
 
     r = requests.get(_core.__DEF_URL__)
-    nearest_ships = _core.__filter_of_nearests__(r.json()['states'],
-                                           nearest, start_point, )
+    nearest_ships = _core.filter_of_nearests(r.json()['states'], nearest, start_point, )
     return nearest_ships
-
 
 
 def __main__():

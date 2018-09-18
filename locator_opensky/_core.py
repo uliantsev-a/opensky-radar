@@ -4,7 +4,8 @@ from math import radians, cos, sin, asin, sqrt
 # default data resource URL
 __DEF_URL__ = "https://opensky-network.org/api/states/all"
 
-def __filter_of_nearests__(list, nearest, start_point):
+
+def filter_of_nearests(list, nearest, start_point):
     """
     Filtering by the coefficient closest to the starting point
     @param (list) list: objects to filtering
@@ -14,14 +15,13 @@ def __filter_of_nearests__(list, nearest, start_point):
     """
     _res_list = []
     for item in list:
-        distance = __calculate_distance__(start_point[0], start_point[1],
-                                          item[6], item[5])
+        distance = calculate_distance(start_point[0], start_point[1], item[6], item[5])
         if distance is not None and nearest >= distance:
-            _res_list.append(__serialize_item_object__(item))
+            _res_list.append(serialize_item_object(item))
     return _res_list
 
 
-def __serialize_item_object__(list_item):
+def serialize_item_object(list_item):
     """
     # Preparing one answer from the value pool
     @param (list) list_item: value pool
@@ -36,7 +36,7 @@ def __serialize_item_object__(list_item):
     }
 
 
-def __calculate_distance__(lat1, lon1, lat2, lon2):
+def calculate_distance(lat1, lon1, lat2, lon2):
         """
         Calculates the distance in kilometers between two points
         given the circumference of the Earth.

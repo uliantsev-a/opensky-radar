@@ -1,5 +1,5 @@
 import unittest
-from  locator_opensky import _core as locator_opensky
+from locator_opensky import _core as locator_opensky
 import requests
 
 
@@ -15,11 +15,11 @@ class TestLocatorOpenSky(unittest.TestCase):
     nearest = 450  # maximum radius for locator
 
     def setUp(self):
-        self.right_res = [locator_opensky.__serialize_item_object__(
+        self.right_res = [locator_opensky.serialize_item_object(
             self.list_right_pool[1])]
 
     def test_get_nearest(self):
-        res_filter = locator_opensky.__filter_of_nearests__(
+        res_filter = locator_opensky.filter_of_nearests(
             self.list_right_pool, self.nearest, self.start_point)
         # Test for filter right
         self.assertCountEqual(self.right_res, res_filter)
@@ -35,17 +35,17 @@ class TestLocatorOpenSky(unittest.TestCase):
     def test_calculate_distance(self):
         # Check that the count returns a number
         for pool in self.list_right_pool:
-            distance = locator_opensky.__calculate_distance__(
+            distance = locator_opensky.calculate_distance(
                 self.start_point[0], self.start_point[1], pool[6], pool[5])
             self.assertTrue(isinstance(distance, (int, float)))
 
         # Check if the coordinates are incorrect
         none_dist = (locator_opensky.
-                     __calculate_distance__(*self.test_false_coord))
+                     calculate_distance(*self.test_false_coord))
         self.assertEqual(none_dist, None)
         self.assertFalse(isinstance(none_dist, int))
 
-        beet_dist = locator_opensky.__calculate_distance__(
+        beet_dist = locator_opensky.calculate_distance(
             self.start_point[0], self.start_point[1],
             self.list_right_pool[0][6],
             self.list_right_pool[0][5])
