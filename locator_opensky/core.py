@@ -2,10 +2,10 @@
 from math import radians, cos, sin, asin, sqrt
 
 # default data resource URL
-__DEF_URL__ = "https://opensky-network.org/api/states/all"
+DEF_URL = "https://opensky-network.org/api/states/all"
 
 
-def filter_of_nearests(list, nearest, start_point):
+def clipping_far_ships(list, nearest, start_point):
     """
     Filtering by the coefficient closest to the starting point
     @param (list) list: objects to filtering
@@ -13,12 +13,13 @@ def filter_of_nearests(list, nearest, start_point):
     @param (list) start_point: point of start
     @return: filtering result
     """
-    _res_list = []
+
     for item in list:
         distance = calculate_distance(start_point[0], start_point[1], item[6], item[5])
-        if distance is not None and nearest >= distance:
-            _res_list.append(serialize_item_object(item))
-    return _res_list
+        if distance is None or nearest < distance:
+            continue
+
+        yield serialize_item_object(item)
 
 
 def serialize_item_object(list_item):
@@ -27,6 +28,7 @@ def serialize_item_object(list_item):
     @param (list) list_item: value pool
     @return (dict): json object
     """
+
     if not isinstance(list_item, list) and len(list_item) < 6:
         raise Exception("Bad pool for serialize")
     return {
@@ -47,6 +49,7 @@ def calculate_distance(lat1, lon1, lat2, lon2):
         @param (float) lon2: longitude second point
         @return: filtering result
         """
+
         if None in [lat1, lon1, lat2, lon2]:
             return None
 

@@ -1,13 +1,15 @@
 import unittest
-from locator_opensky import _core as locator_opensky
+from locator_opensky import core
 import requests
 
 
 class TestLocatorOpenSky(unittest.TestCase):
     start_point = [48.856651, 2.351691]  # Paris
     # [[Berlin], [Orlean-Lyare]]
-    list_right_pool = [[0, 'OAL224', 2, 3, 4, 13.406888, 52.517481],
-                       [0, 'VIR3N   ', 2, 3, 4, 1.879132, 47.943628]]
+    list_right_pool = [
+        [0, 'OAL224', 2, 3, 4, 13.406888, 52.517481],
+        [0, 'VIR3N   ', 2, 3, 4, 1.879132, 47.943628]
+    ]
 
     test_false_coord = [48.8566, None, 48.8566, '2.2551']
 
@@ -15,17 +17,15 @@ class TestLocatorOpenSky(unittest.TestCase):
     nearest = 450  # maximum radius for locator
 
     def setUp(self):
-        self.right_res = [locator_opensky.serialize_item_object(
-            self.list_right_pool[1])]
+        self.right_res = [core.serialize_item_object(self.list_right_pool[1])]
 
     def test_get_nearest(self):
-        res_filter = locator_opensky.filter_of_nearests(
-            self.list_right_pool, self.nearest, self.start_point)
+        res_filter = core.clipping_far_ships(self.list_right_pool, self.nearest, self.start_point)
         # Test for filter right
         self.assertCountEqual(self.right_res, res_filter)
 
     def test_url_opensky(self):
-        r = requests.get(locator_opensky.__DEF_URL__)
+        r = requests.get(core.DEF_URL)
         # True response
         self.assertTrue(r.ok)
         # Content Checking
@@ -35,20 +35,19 @@ class TestLocatorOpenSky(unittest.TestCase):
     def test_calculate_distance(self):
         # Check that the count returns a number
         for pool in self.list_right_pool:
-            distance = locator_opensky.calculate_distance(
-                self.start_point[0], self.start_point[1], pool[6], pool[5])
+            distance = core.calculate_distance(self.start_point[0], self.start_point[1], pool[6], pool[5])
             self.assertTrue(isinstance(distance, (int, float)))
 
         # Check if the coordinates are incorrect
-        none_dist = (locator_opensky.
-                     calculate_distance(*self.test_false_coord))
+        none_dist = (core.calculate_distance(*self.test_false_coord))
         self.assertEqual(none_dist, None)
         self.assertFalse(isinstance(none_dist, int))
 
-        beet_dist = locator_opensky.calculate_distance(
+        beet_dist = core.calculate_distance(
             self.start_point[0], self.start_point[1],
             self.list_right_pool[0][6],
-            self.list_right_pool[0][5])
+            self.list_right_pool[0][5]
+        )
         # test of value right calculate
         self.assertAlmostEqual(round(beet_dist), round(self.between_about))
 

@@ -1,0 +1,9 @@
+*.pyc
+.idea
+*.egg-info
+.pytest_cache
+.git
+.coverage
+*.sqlite3
+__pycache__
+htmlcov
