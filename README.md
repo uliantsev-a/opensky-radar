@@ -1,4 +1,4 @@
-Description
+## Simple radar OpenSky
 ===========
 The library accesses the API of OpenSky air data service
 and displays a list of aircraft located within a radius of 450 km from StartPoint.
